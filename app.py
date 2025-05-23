@@ -1,4 +1,5 @@
 import streamlit as st
+from dotenv import load_dotenv
 import os
 import PyPDF2
 import requests
@@ -6,12 +7,18 @@ import re
 from fpdf import FPDF
 import io
 
-# Load API Key
 load_dotenv()
-groq_api_key = st.secrets["GROQ_API_KEY"]
+
+# Try from Streamlit secrets first, fallback to .env
+groq_api_key = os.getenv("GROQ_API_KEY")  # fallback default
+
+try:
+    groq_api_key = st.secrets["GROQ_API_KEY"]
+except Exception:
+    pass  # use the fallback from .env
+
 if not groq_api_key:
-    st.error("❌ GROQ_API_KEY missing in .env file.")
-    st.stop()
+    st.error("GROQ_API_KEY not found. Please set it in Streamlit secrets or .env file.")
 
 st.set_page_config(page_title="Smart Document Comparator", layout="centered")
 st.title("AI Comparator")
