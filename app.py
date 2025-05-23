@@ -9,7 +9,7 @@ import io
 
 # Load API Key
 load_dotenv()
-groq_api_key = os.getenv("GROQ_API_KEY")
+groq_api_key = st.secrets["GROQ_API_KEY"]
 if not groq_api_key:
     st.error("❌ GROQ_API_KEY missing in .env file.")
     st.stop()
